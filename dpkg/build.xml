@@ -1,4 +1,4 @@
-<project name="minicloud" basedir="." default="tarball">
+<project name="minicloud" basedir="." default="unpack">
     <property name="upstream-src" value=".." />
     <property name="build-dir" value="build" />
     <property name="package" value="minicloud" />
@@ -6,17 +6,22 @@
 
     <property name="deb-package" value="${package}-${version}" />
 
-    <target name="clean">
-        <delete dir="${build-dir}" />
+    <target name="pull-upstream" depends="prepenv">
+        <get src="https://github.com/slbmeh/minicloud/zipball/v${version}" dest="${build-dir}/upstream/${package}_${version}.raw.zip" />
+        <copy todir="${build-dir}/upstream/${deb-package}" preservelastmodified="true">
+            <zipfileset src="${build-dir}/upstream/${package}_${version}.raw.zip" />
+            <cutdirsmapper dirs="1" />
+        </copy>
     </target>
 
-    <target name="prepenv" depends="clean">
+    <target name="prepenv">
+        <delete dir="${build-dir}" />
         <mkdir dir="${build-dir}" />
         <mkdir dir="${build-dir}/upstream/" />
         <mkdir dir="${build-dir}/upstream/${deb-package}" />
         <mkdir dir="${build-dir}/${deb-package}" />
     </target>
 
-    <target name="tarball" depends="prepenv" />
+    <target name="unpack" depends="pull-upstream" />
 
 </project>
