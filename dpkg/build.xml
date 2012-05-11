@@ -1,0 +1,22 @@
+<project name="minicloud" basedir="." default="tarball">
+    <property name="upstream-src" value=".." />
+    <property name="build-dir" value="build" />
+    <property name="package" value="minicloud" />
+    <property name="version" value="1.0" />
+
+    <property name="deb-package" value="${package}-${version}" />
+
+    <target name="clean">
+        <delete dir="${build-dir}" />
+    </target>
+
+    <target name="prepenv" depends="clean">
+        <mkdir dir="${build-dir}" />
+        <mkdir dir="${build-dir}/upstream/" />
+        <mkdir dir="${build-dir}/upstream/${deb-package}" />
+        <mkdir dir="${build-dir}/${deb-package}" />
+    </target>
+
+    <target name="tarball" depends="prepenv" />
+
+</project>
